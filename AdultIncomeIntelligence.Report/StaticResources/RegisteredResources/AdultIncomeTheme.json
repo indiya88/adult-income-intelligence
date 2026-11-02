@@ -1,0 +1,334 @@
+{
+  "name": "Adult Income Dark",
+  "dataColors": [
+    "#A78BFA",
+    "#D4AF5A",
+    "#D36EF5",
+    "#7C3AED",
+    "#E8C97A",
+    "#5EEAD4",
+    "#F08AA0",
+    "#8B5CF6"
+  ],
+  "background": "#0D0A14",
+  "foreground": "#F3EEE4",
+  "tableAccent": "#A78BFA",
+  "good": "#34D399",
+  "bad": "#F08AA0",
+  "neutral": "#D4AF5A",
+  "textClasses": {
+    "callout": {
+      "fontSize": 26,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#F3EEE4"
+    },
+    "title": {
+      "fontSize": 12,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#F3EEE4"
+    },
+    "header": {
+      "fontSize": 11,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#F3EEE4"
+    },
+    "label": {
+      "fontSize": 10,
+      "fontFace": "Segoe UI",
+      "color": "#CFC9DC"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#161022"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#2A2140"
+              }
+            },
+            "radius": 10
+          }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontColor": {
+              "solid": {
+                "color": "#F3EEE4"
+              }
+            },
+            "fontSize": 11
+          }
+        ],
+        "visualHeader": [
+          {
+            "show": false
+          }
+        ],
+        "dropShadow": [
+          {
+            "show": false
+          }
+        ],
+        "padding": [
+          {
+            "top": 10,
+            "bottom": 10,
+            "left": 12,
+            "right": 12
+          }
+        ],
+        "valueAxis": [
+          {
+            "gridlineColor": {
+              "solid": {
+                "color": "#2A2140"
+              }
+            },
+            "labelColor": {
+              "solid": {
+                "color": "#948CA8"
+              }
+            }
+          }
+        ],
+        "categoryAxis": [
+          {
+            "labelColor": {
+              "solid": {
+                "color": "#948CA8"
+              }
+            }
+          }
+        ],
+        "legend": [
+          {
+            "labelColor": {
+              "solid": {
+                "color": "#CFC9DC"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#0D0A14"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#0D0A14"
+              }
+            },
+            "transparency": 0
+          }
+        ]
+      }
+    },
+    "textbox": {
+      "*": {
+        "background": [
+          {
+            "show": false
+          }
+        ],
+        "border": [
+          {
+            "show": false
+          }
+        ]
+      }
+    },
+    "card": {
+      "*": {
+        "labels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#F3EEE4"
+              }
+            }
+          }
+        ],
+        "categoryLabels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#948CA8"
+              }
+            },
+            "fontSize": 9
+          }
+        ]
+      }
+    },
+    "slicer": {
+      "*": {
+        "padding": [
+          {
+            "top": 4,
+            "bottom": 6,
+            "left": 8,
+            "right": 8
+          }
+        ],
+        "items": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#CFC9DC"
+              }
+            },
+            "background": {
+              "solid": {
+                "color": "#161022"
+              }
+            }
+          }
+        ],
+        "header": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#948CA8"
+              }
+            },
+            "textSize": 9
+          }
+        ]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "columnHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#D4AF5A"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#161022"
+              }
+            }
+          }
+        ],
+        "values": [
+          {
+            "fontColorPrimary": {
+              "solid": {
+                "color": "#CFC9DC"
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": "#161022"
+              }
+            },
+            "fontColorSecondary": {
+              "solid": {
+                "color": "#CFC9DC"
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": "#1B1429"
+              }
+            }
+          }
+        ],
+        "grid": [
+          {
+            "gridHorizontalColor": {
+              "solid": {
+                "color": "#2A2140"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "pivotTable": {
+      "*": {
+        "columnHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#D4AF5A"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#161022"
+              }
+            }
+          }
+        ],
+        "rowHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#CFC9DC"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#161022"
+              }
+            }
+          }
+        ],
+        "values": [
+          {
+            "fontColorPrimary": {
+              "solid": {
+                "color": "#CFC9DC"
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": "#161022"
+              }
+            },
+            "fontColorSecondary": {
+              "solid": {
+                "color": "#CFC9DC"
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": "#1B1429"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

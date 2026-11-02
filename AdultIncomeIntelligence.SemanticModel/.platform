@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "AdultIncomeIntelligence"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "bafc07ae-c6a6-5e7c-b687-930922e2f7ee"
+  }
+}

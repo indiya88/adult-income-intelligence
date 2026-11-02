@@ -1,0 +1,6 @@
+/// Where the CSV lives on this computer. Change it in Transform data > Edit parameters.
+expression CsvPath = "S:\ITprojects\AdultIncomeIntelligence\data\adult_all.csv" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: b8275102-c0e6-5eb0-b5e3-3d26eed5a879
+
+	annotation PBI_ResultType = Text
+

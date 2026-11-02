@@ -1,0 +1,208 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "dq_method",
+  "position": {
+    "x": 24,
+    "y": 200,
+    "z": 7000,
+    "width": 600,
+    "height": 504,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "How it was built",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Data: ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "32,561 people from the 1994 U.S. Census. Income is just above or below $50K, not an exact salary.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Cleaning: ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "trimmed spaces, kept missing values as \"unknown\" instead of deleting rows, and grouped age, hours and education into bands.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Insights: ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "written in DAX, no AI. They update with the filters and skip very small groups.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Checked: ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "key numbers match the original Python analysis.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": " ",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Keep in mind",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "This is 1994 data, so it does not describe today.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "These are patterns, not causes. Nothing else was controlled for.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Results describe this sample, not the whole U.S. population.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "24 duplicate rows were kept, since they may be different people.",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

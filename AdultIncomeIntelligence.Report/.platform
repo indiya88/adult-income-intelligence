@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "AdultIncomeIntelligence"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "beb3f058-4183-50b5-93d8-266f828ca520"
+  }
+}

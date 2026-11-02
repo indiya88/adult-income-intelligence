@@ -1,0 +1,476 @@
+table adult_income
+	lineageTag: 4b9c9fdb-b4a1-5074-9769-7c6c13dc5c77
+
+	/// Number of people in the current selection.
+	measure People = COUNTROWS ( adult_income )
+		formatString: #,0
+		displayFolder: Core
+		lineageTag: 131be629-72be-5a1c-bab6-6799e3de00c3
+
+	/// People earning above $50K.
+	measure 'Above $50K' = SUM ( adult_income[high_income] )
+		formatString: #,0
+		displayFolder: Core
+		lineageTag: d5afaf12-df23-53a3-8d99-202876afadc1
+
+	/// People earning $50K or less.
+	measure 'Below $50K' = [People] - [Above $50K]
+		formatString: #,0
+		displayFolder: Core
+		lineageTag: 1ced0a86-9a06-522a-bf2b-34af52aac735
+
+	/// Share of the selection earning above $50K. Used for every group comparison so big and small groups compare fairly.
+	measure 'Above $50K Rate' = DIVIDE ( [Above $50K], [People] )
+		formatString: 0.0%
+		displayFolder: Core
+		lineageTag: 1d2b6b1a-dd6c-555d-99f0-ceb3b2898e5e
+
+	/// Middle value of hours worked per week.
+	measure 'Median Weekly Hours' = MEDIAN ( adult_income[hours.per.week] )
+		formatString: 0
+		displayFolder: Core
+		lineageTag: 2310425b-53cf-57a1-af4c-5e16173974fa
+
+	/// Youngest to oldest age in the selection.
+	measure 'Age Range' =
+			VAR youngest = MIN ( adult_income[age] )
+			VAR oldest = MAX ( adult_income[age] )
+			RETURN IF ( ISBLANK ( youngest ), BLANK (), youngest & "–" & oldest )
+		displayFolder: Core
+		lineageTag: 13a474aa-f16e-5784-9b56-ce96443a3b0c
+
+	/// All rows in the dataset, ignoring filters.
+	measure 'Total Rows' = CALCULATE ( COUNTROWS ( adult_income ), REMOVEFILTERS ( adult_income ) )
+		formatString: #,0
+		displayFolder: Data Quality
+		lineageTag: e714767a-6bc9-572b-9d2e-31c296ee5434
+
+	/// Columns in the original CSV.
+	measure 'Original Columns' = 15
+		formatString: 0
+		displayFolder: Data Quality
+		lineageTag: b3610240-e825-5f5b-8af0-5e891740b38c
+
+	/// Rows that exactly match another row. Kept, since identical records can be different people.
+	measure 'Duplicate Rows' = [Total Rows] - COUNTROWS ( DISTINCT ( ALL ( adult_income ) ) )
+		formatString: #,0
+		displayFolder: Data Quality
+		lineageTag: d20b4a66-0fd3-572f-888b-2325f68f8f23
+
+	/// Missing workclass values, labeled unknown.
+	measure 'Unknown Workclass' = CALCULATE ( COUNTROWS ( adult_income ), REMOVEFILTERS ( adult_income ), adult_income[workclass] = "unknown" )
+		formatString: #,0
+		displayFolder: Data Quality
+		lineageTag: f46f2512-42f4-542d-9bb7-e026bb7141e2
+
+	/// Missing occupation values, labeled unknown.
+	measure 'Unknown Occupation' = CALCULATE ( COUNTROWS ( adult_income ), REMOVEFILTERS ( adult_income ), adult_income[occupation] = "unknown" )
+		formatString: #,0
+		displayFolder: Data Quality
+		lineageTag: fef1b2e0-588e-54c9-a978-42e844dd69a4
+
+	/// Blank native country values, labeled unknown.
+	measure 'Unknown Country' = CALCULATE ( COUNTROWS ( adult_income ), REMOVEFILTERS ( adult_income ), adult_income[native.country] = "unknown" )
+		formatString: #,0
+		displayFolder: Data Quality
+		lineageTag: 6d52cc7a-eb0b-5d65-a8a1-24eddc018308
+
+	/// Headline: how many people earn above $50K.
+	measure 'Insight Income Split' =
+			IF (
+				[People] = 0,
+				"No records match these filters.",
+				FORMAT ( [Above $50K], "#,0" ) & " of " & FORMAT ( [People], "#,0" ) & " people ("
+					& FORMAT ( [Above $50K Rate], "0.0%" ) & ") earn above $50K."
+			)
+		displayFolder: Insights
+		lineageTag: 82020e53-81c3-5d2a-90e3-52390b46b02b
+
+	/// Education level with the highest above-$50K rate.
+	measure 'Insight Education' =
+			// Find the group with the highest above-$50K rate, skipping tiny groups
+			VAR minGroup = MAX ( 20, INT ( [People] * 0.005 ) )
+			VAR groups =
+				FILTER (
+					ADDCOLUMNS (
+						VALUES ( adult_income[education] ),
+						"@people", [People],
+						"@high", [Above $50K],
+						"@rate", [Above $50K Rate]
+					),
+					[@people] >= minGroup
+				)
+			VAR best = TOPN ( 1, groups, [@rate], DESC )
+			VAR bestName = MAXX ( best, adult_income[education] )
+			RETURN
+				IF (
+					ISBLANK ( bestName ),
+					"Not enough records in this selection.",
+					bestName & " has the highest share earning above $50K: "
+						& FORMAT ( MAXX ( best, [@rate] ), "0.0%" ) & " ("
+						& FORMAT ( MAXX ( best, [@high] ), "#,0" ) & " of "
+						& FORMAT ( MAXX ( best, [@people] ), "#,0" ) & ")."
+				)
+		displayFolder: Insights
+		lineageTag: ead610f5-7e2e-5779-9b96-a3de5c46296d
+
+	/// Occupation with the highest above-$50K rate.
+	measure 'Insight Occupation' =
+			// Find the group with the highest above-$50K rate, skipping tiny groups
+			VAR minGroup = MAX ( 20, INT ( [People] * 0.005 ) )
+			VAR groups =
+				FILTER (
+					ADDCOLUMNS (
+						VALUES ( adult_income[occupation] ),
+						"@people", [People],
+						"@high", [Above $50K],
+						"@rate", [Above $50K Rate]
+					),
+					[@people] >= minGroup
+				)
+			VAR best = TOPN ( 1, groups, [@rate], DESC )
+			VAR bestName = MAXX ( best, adult_income[occupation] )
+			RETURN
+				IF (
+					ISBLANK ( bestName ),
+					"Not enough records in this selection.",
+					bestName & " has the highest share earning above $50K: "
+						& FORMAT ( MAXX ( best, [@rate] ), "0.0%" ) & " ("
+						& FORMAT ( MAXX ( best, [@high] ), "#,0" ) & " of "
+						& FORMAT ( MAXX ( best, [@people] ), "#,0" ) & ")."
+				)
+		displayFolder: Insights
+		lineageTag: ec1188ae-f631-55ba-bab0-fd2c4de0493c
+
+	/// Age group with the highest above-$50K rate.
+	measure 'Insight Age' =
+			// Find the group with the highest above-$50K rate, skipping tiny groups
+			VAR minGroup = MAX ( 20, INT ( [People] * 0.005 ) )
+			VAR groups =
+				FILTER (
+					ADDCOLUMNS (
+						VALUES ( adult_income[age_group] ),
+						"@people", [People],
+						"@high", [Above $50K],
+						"@rate", [Above $50K Rate]
+					),
+					[@people] >= minGroup
+				)
+			VAR best = TOPN ( 1, groups, [@rate], DESC )
+			VAR bestName = MAXX ( best, adult_income[age_group] )
+			RETURN
+				IF (
+					ISBLANK ( bestName ),
+					"Not enough records in this selection.",
+					"People aged " & bestName & " have the highest share earning above $50K: "
+						& FORMAT ( MAXX ( best, [@rate] ), "0.0%" ) & " ("
+						& FORMAT ( MAXX ( best, [@high] ), "#,0" ) & " of "
+						& FORMAT ( MAXX ( best, [@people] ), "#,0" ) & ")."
+				)
+		displayFolder: Insights
+		lineageTag: 348fbe75-849a-571e-a590-3f0d0f6a0205
+
+	/// Weekly hours band with the highest above-$50K rate.
+	measure 'Insight Hours' =
+			// Find the group with the highest above-$50K rate, skipping tiny groups
+			VAR minGroup = MAX ( 20, INT ( [People] * 0.005 ) )
+			VAR groups =
+				FILTER (
+					ADDCOLUMNS (
+						VALUES ( adult_income[hours_band] ),
+						"@people", [People],
+						"@high", [Above $50K],
+						"@rate", [Above $50K Rate]
+					),
+					[@people] >= minGroup
+				)
+			VAR best = TOPN ( 1, groups, [@rate], DESC )
+			VAR bestName = MAXX ( best, adult_income[hours_band] )
+			RETURN
+				IF (
+					ISBLANK ( bestName ),
+					"Not enough records in this selection.",
+					"People working " & bestName & " hours a week have the highest share earning above $50K: "
+						& FORMAT ( MAXX ( best, [@rate] ), "0.0%" ) & " ("
+						& FORMAT ( MAXX ( best, [@high] ), "#,0" ) & " of "
+						& FORMAT ( MAXX ( best, [@people] ), "#,0" ) & ")."
+				)
+		displayFolder: Insights
+		lineageTag: 29443a2b-aaba-5edf-91f8-ecbf0f415ba5
+
+	/// Above-$50K rate for men compared with women, within the other filters.
+	measure 'Insight Sex Gap' =
+			VAR men = CALCULATE ( [Above $50K Rate], adult_income[sex] = "Male" )
+			VAR women = CALCULATE ( [Above $50K Rate], adult_income[sex] = "Female" )
+			RETURN
+				IF (
+					ISBLANK ( men ) || ISBLANK ( women ),
+					"Not enough records to compare men and women.",
+					"Men earn above $50K at " & FORMAT ( men, "0.0%" ) & " compared with "
+						& FORMAT ( women, "0.0%" ) & " for women, a gap of "
+						& FORMAT ( ( men - women ) * 100, "0.0" ) & " percentage points."
+				)
+		displayFolder: Insights
+		lineageTag: 3142c916-920a-5082-bd44-304c969475dc
+
+	/// Bachelor's degree or higher compared with high school or less.
+	measure 'Insight Degree Gap' =
+			VAR degree = CALCULATE ( [Above $50K Rate], adult_income[education.num] >= 13 )
+			VAR highSchool = CALCULATE ( [Above $50K Rate], adult_income[education.num] <= 9 )
+			RETURN
+				IF (
+					ISBLANK ( degree ) || ISBLANK ( highSchool ),
+					"Not enough records to compare education levels.",
+					"A bachelor's degree or higher: " & FORMAT ( degree, "0.0%" )
+						& " earn above $50K, compared with " & FORMAT ( highSchool, "0.0%" )
+						& " for high school or less."
+				)
+		displayFolder: Insights
+		lineageTag: 2d4bf380-da8e-5e7a-8edf-e283e9ee3976
+
+	column age
+		dataType: int64
+		formatString: 0
+		lineageTag: ad276b93-22da-5f5a-864d-9191bbf6d4bf
+		summarizeBy: none
+		sourceColumn: age
+
+		annotation SummarizationSetBy = User
+
+	column workclass
+		dataType: string
+		lineageTag: b87b82e6-668a-5739-b968-dfb02dc0b135
+		summarizeBy: none
+		sourceColumn: workclass
+
+		annotation SummarizationSetBy = User
+
+	column fnlwgt
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: faab7dd1-53cc-5df7-a877-2cac00c0b80a
+		summarizeBy: none
+		sourceColumn: fnlwgt
+
+		annotation SummarizationSetBy = User
+
+	column education
+		dataType: string
+		lineageTag: a30f5c91-84f7-5637-856c-74fd5c10fe00
+		summarizeBy: none
+		sourceColumn: education
+		sortByColumn: 'education.num'
+
+		annotation SummarizationSetBy = User
+
+	column 'education.num'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8fd805c8-bb07-5bba-8c63-574f11c18a29
+		summarizeBy: none
+		sourceColumn: education.num
+
+		annotation SummarizationSetBy = User
+
+	column 'marital.status'
+		dataType: string
+		lineageTag: 94e8f60c-cd61-547a-85ab-443acdc7473b
+		summarizeBy: none
+		sourceColumn: marital.status
+
+		annotation SummarizationSetBy = User
+
+	column occupation
+		dataType: string
+		lineageTag: be8575b2-0a36-5790-8d81-9d4550283245
+		summarizeBy: none
+		sourceColumn: occupation
+
+		annotation SummarizationSetBy = User
+
+	column relationship
+		dataType: string
+		lineageTag: 16caa0b2-4632-53da-aee4-98dc02ce54fa
+		summarizeBy: none
+		sourceColumn: relationship
+
+		annotation SummarizationSetBy = User
+
+	column race
+		dataType: string
+		lineageTag: 4b54b0d4-7343-5e90-ad87-c71c15f6792d
+		summarizeBy: none
+		sourceColumn: race
+
+		annotation SummarizationSetBy = User
+
+	column sex
+		dataType: string
+		lineageTag: 212717b9-13b2-5070-84f7-cb065c676d2e
+		summarizeBy: none
+		sourceColumn: sex
+
+		annotation SummarizationSetBy = User
+
+	column 'capital.gain'
+		dataType: int64
+		formatString: 0
+		lineageTag: 037e8876-f911-5b84-a469-88cc1b0068e7
+		summarizeBy: none
+		sourceColumn: capital.gain
+
+		annotation SummarizationSetBy = User
+
+	column 'capital.loss'
+		dataType: int64
+		formatString: 0
+		lineageTag: 080e8694-ce16-5824-9233-b1944a6cce0f
+		summarizeBy: none
+		sourceColumn: capital.loss
+
+		annotation SummarizationSetBy = User
+
+	column 'hours.per.week'
+		dataType: int64
+		formatString: 0
+		lineageTag: b3e625e2-162b-5999-9e5d-3f7f6e3e4b4a
+		summarizeBy: none
+		sourceColumn: hours.per.week
+
+		annotation SummarizationSetBy = User
+
+	column 'native.country'
+		dataType: string
+		lineageTag: 38da27de-db1e-5449-bd2a-21e96ae2444b
+		summarizeBy: none
+		sourceColumn: native.country
+
+		annotation SummarizationSetBy = User
+
+	column income
+		dataType: string
+		lineageTag: ebdb53a4-5aa8-577e-9742-6c92f7194f75
+		summarizeBy: none
+		sourceColumn: income
+
+		annotation SummarizationSetBy = User
+
+	column high_income
+		dataType: int64
+		formatString: 0
+		lineageTag: ff0543eb-fb3f-5984-b6ff-da6d04d92794
+		summarizeBy: none
+		sourceColumn: high_income
+
+		annotation SummarizationSetBy = User
+
+	column age_group
+		dataType: string
+		lineageTag: fc2913ad-f3c0-5293-85db-83f45a8b635c
+		summarizeBy: none
+		sourceColumn: age_group
+		sortByColumn: age_group_order
+
+		annotation SummarizationSetBy = User
+
+	column age_group_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: cfdf422c-032f-5d64-b1b6-4833ee8a6624
+		summarizeBy: none
+		sourceColumn: age_group_order
+
+		annotation SummarizationSetBy = User
+
+	column hours_band
+		dataType: string
+		lineageTag: d77b5f55-e074-580e-ae3a-3fdcae4f6376
+		summarizeBy: none
+		sourceColumn: hours_band
+		sortByColumn: hours_band_order
+
+		annotation SummarizationSetBy = User
+
+	column hours_band_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 448177d8-6d32-5c19-886f-ce52f2f22067
+		summarizeBy: none
+		sourceColumn: hours_band_order
+
+		annotation SummarizationSetBy = User
+
+	column education_level
+		dataType: string
+		lineageTag: 2365e4c2-65f0-596c-8055-8ec5f58ed11b
+		summarizeBy: none
+		sourceColumn: education_level
+		sortByColumn: education_level_order
+
+		annotation SummarizationSetBy = User
+
+	column education_level_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 81626218-902d-5b79-9601-3fcd55e38384
+		summarizeBy: none
+		sourceColumn: education_level_order
+
+		annotation SummarizationSetBy = User
+
+	partition adult_income = m
+		mode: import
+		source =
+				let
+					// Load the CSV and use the first row as column names
+					Source = Csv.Document(File.Contents(CsvPath), [Delimiter=",", Columns=15, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					// Set the right type for every column
+					Typed = Table.TransformColumnTypes(#"Promoted Headers", {
+						{"age", Int64.Type}, {"fnlwgt", Int64.Type}, {"education.num", Int64.Type},
+						{"capital.gain", Int64.Type}, {"capital.loss", Int64.Type}, {"hours.per.week", Int64.Type},
+						{"workclass", type text}, {"education", type text}, {"marital.status", type text},
+						{"occupation", type text}, {"relationship", type text}, {"race", type text},
+						{"sex", type text}, {"native.country", type text}, {"income", type text}}),
+					// Remove stray spaces from text columns
+					TextCols = {"workclass","education","marital.status","occupation","relationship","race","sex","native.country","income"},
+					Trimmed = Table.TransformColumns(Typed, List.Transform(TextCols, each {_, Text.Trim, type text})),
+					// Label blanks and question marks as "unknown" instead of dropping the rows
+					Unknowns = Table.TransformColumns(Trimmed, List.Transform(TextCols, each {_, (v) => if v = null or v = "" or v = "?" or v = "nan" then "unknown" else v, type text})),
+					// 1 if the person earns above $50K, 0 if not (easy to add up)
+					HighIncome = Table.AddColumn(Unknowns, "high_income", each if Text.Contains([income], ">50K") then 1 else 0, Int64.Type),
+					// Age groups, with a number column so they sort in the right order
+					AgeGroup = Table.AddColumn(HighIncome, "age_group", each
+						if [age] <= 24 then "17–24" else if [age] <= 34 then "25–34" else if [age] <= 44 then "35–44"
+						else if [age] <= 54 then "45–54" else if [age] <= 64 then "55–64" else "65+", type text),
+					AgeOrder = Table.AddColumn(AgeGroup, "age_group_order", each
+						if [age] <= 24 then 1 else if [age] <= 34 then 2 else if [age] <= 44 then 3
+						else if [age] <= 54 then 4 else if [age] <= 64 then 5 else 6, Int64.Type),
+					// Weekly hours grouped into bands, also with a sort column
+					HoursBand = Table.AddColumn(AgeOrder, "hours_band", each
+						if [hours.per.week] <= 19 then "0–19" else if [hours.per.week] <= 34 then "20–34"
+						else if [hours.per.week] <= 40 then "35–40" else if [hours.per.week] <= 49 then "41–49"
+						else if [hours.per.week] <= 59 then "50–59" else "60+", type text),
+					HoursOrder = Table.AddColumn(HoursBand, "hours_band_order", each
+						if [hours.per.week] <= 19 then 1 else if [hours.per.week] <= 34 then 2
+						else if [hours.per.week] <= 40 then 3 else if [hours.per.week] <= 49 then 4
+						else if [hours.per.week] <= 59 then 5 else 6, Int64.Type),
+					// Education grouped into 7 readable levels (the 16 originals are kept too)
+					EduGroup = Table.AddColumn(HoursOrder, "education_level", each
+						if [education.num] <= 8 then "Less than high school" else if [education.num] = 9 then "High school"
+						else if [education.num] = 10 then "Some college" else if [education.num] <= 12 then "Associate"
+						else if [education.num] = 13 then "Bachelor's" else if [education.num] = 14 then "Master's"
+						else "Doctorate or professional", type text),
+					EduOrder = Table.AddColumn(EduGroup, "education_level_order", each
+						if [education.num] <= 8 then 1 else if [education.num] = 9 then 2 else if [education.num] = 10 then 3
+						else if [education.num] <= 12 then 4 else if [education.num] = 13 then 5 else if [education.num] = 14 then 6
+						else 7, Int64.Type)
+				in
+					EduOrder
+
+	annotation PBI_ResultType = Table
+

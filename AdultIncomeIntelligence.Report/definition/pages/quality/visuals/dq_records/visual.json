@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "dq_records",
+  "position": {
+    "x": 636,
+    "y": 474,
+    "z": 9000,
+    "width": 620,
+    "height": 230,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "adult_income"
+                    }
+                  },
+                  "Property": "age"
+                }
+              },
+              "queryRef": "adult_income.age",
+              "nativeQueryRef": "age"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "adult_income"
+                    }
+                  },
+                  "Property": "education"
+                }
+              },
+              "queryRef": "adult_income.education",
+              "nativeQueryRef": "education"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "adult_income"
+                    }
+                  },
+                  "Property": "occupation"
+                }
+              },
+              "queryRef": "adult_income.occupation",
+              "nativeQueryRef": "occupation"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "adult_income"
+                    }
+                  },
+                  "Property": "sex"
+                }
+              },
+              "queryRef": "adult_income.sex",
+              "nativeQueryRef": "sex"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "adult_income"
+                    }
+                  },
+                  "Property": "hours.per.week"
+                }
+              },
+              "queryRef": "adult_income.hours.per.week",
+              "nativeQueryRef": "hours.per.week"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "adult_income"
+                    }
+                  },
+                  "Property": "income"
+                }
+              },
+              "queryRef": "adult_income.income",
+              "nativeQueryRef": "income"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Sample records'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

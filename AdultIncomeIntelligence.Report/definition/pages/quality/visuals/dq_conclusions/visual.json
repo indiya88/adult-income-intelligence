@@ -1,0 +1,160 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "dq_conclusions",
+  "position": {
+    "x": 636,
+    "y": 200,
+    "z": 8000,
+    "width": 620,
+    "height": 262,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "What the data shows",
+                    "textStyle": {
+                      "fontSize": "13pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Education: ",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "48.5% of people with a bachelor's degree or higher earn above $50K, compared with 13.0% with high school or less.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Work: ",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "executive and professional jobs have the highest rates, and the rate climbs with hours up to 50 to 59 a week.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Age: ",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "the rate peaks at ages 45 to 54 (40.1%).",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Sex: ",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "30.6% of men and 10.9% of women, and the gap shows up at every education level.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Next: ",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#F3EEE4",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "a model that looks at these factors together.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#CFC9DC"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
