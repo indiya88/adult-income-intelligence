@@ -2,7 +2,7 @@
 
 An interactive Power BI report on the Adult Census Income dataset: who earns above $50K, and how that share differs across demographic and employment groups.
 
-This is a Power BI version of an earlier Python and Streamlit dashboard. Both versions use the same data and the same cleaning rules, and every number here was checked against the original Pandas analysis.
+The report is built with Power Query and DAX. The key numbers were checked against a separate Pandas analysis of the same dataset, using the same cleaning rules.
 
 ## Key findings
 
@@ -37,9 +37,9 @@ All pages have filters for age group, education, occupation, sex and income. The
 - **Executive insights** are written in DAX. They find the strongest group for the current filters and turn it into a sentence. No AI service is used. Groups smaller than 20 people (or 0.5% of the selection) are skipped so tiny groups don't top the list by chance.
 - **Rates, not counts,** are used for comparisons, so a group of 400 people and a group of 10,000 can be compared fairly.
 
-## Validation against the Python version
+## Validation against Pandas
 
-This confirms the Power BI and Python versions agree. It does not test the assumptions behind the analysis.
+The key figures were recalculated in Pandas on the same dataset. This confirms the calculations agree. It does not test the assumptions behind the analysis.
 
 | Check | Pandas | Power BI |
 |---|---|---|
@@ -54,9 +54,7 @@ This confirms the Power BI and Python versions agree. It does not test the assum
 | Top occupation | Exec-managerial, 48.4% | Exec-managerial, 48.4% |
 | Top age group | 45 to 54, 40.1% | 45 to 54, 40.1% |
 
-Two differences from the original app, both intentional:
-- **Unknown native country:** the CSV has 583 blank values. The Power BI version labels all of them as unknown. Depending on the Pandas version, the Streamlit app could report 0 here.
-- **Hours insight:** the Streamlit app compared every exact hour value (its top result was exactly 55 hours). This version compares hour bands, which is easier to read and less sensitive to small groups.
+Note on unknown native country: the CSV has 583 blank values. Power Query labels all of them as unknown. In Pandas, some versions count these blanks as 0 unless they are converted first.
 
 ## Limitations
 
